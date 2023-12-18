@@ -1,41 +1,51 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Produit index{% endblock %}
+{% block title %}Index des Produits{% endblock %}
 
 {% block main_content %}
     <h1>Liste des Produits</h1>
 
-    <table class="table">
-        <thead>
+    {% if produits|length > 0 %}
+    <table class="table table-striped">
+        <thead class="table-dark">
             <tr>
-                <th>Id</th>
+                <th>ID</th>
                 <th>Marque</th>
                 <th>Nom</th>
                 <th>Quantité</th>
                 <th>Commentaires</th>
-                <th>Actions</th>
+                <th class="text-center">Actions</th>
             </tr>
         </thead>
         <tbody>
-        {% for produit in produits %}
+            {% for produit in produits %}
             <tr>
                 <td>{{ produit.id }}</td>
                 <td>{{ produit.marque }}</td>
                 <td>{{ produit.nom }}</td>
                 <td>{{ produit.quantite }}</td>
-                <td>{{ produit.commentaires }}</td>
-                <td>
-                    <a href="{{ path('produit_show', {'id': produit.id}) }}">Voir</a>
-                    <a href="{{ path('produit_edit', {'id': produit.id}) }}">Modifier</a>
+                <td>{{ produit.commentaires|e('html') }}</td>
+                <td class="text-center">
+                    <a href="{{ path('produit_show', {'id': produit.id}) }}" class="btn btn-info btn-sm" aria-label="Voir {{ produit.nom }}">
+                        <i class="bi bi-eye"></i> Voir
+                    </a>
+                    <a href="{{ path('produit_edit', {'id': produit.id}) }}" class="btn btn-primary btn-sm" aria-label="Modifier {{ produit.nom }}">
+                        <i class="bi bi-pencil"></i> Modifier
+                    </a>
                 </td>
             </tr>
-        {% else %}
+            {% else %}
             <tr>
-                <td colspan="6">Aucun produit enregistré</td>
+                <td colspan="6" class="text-center">Aucun produit enregistré.</td>
             </tr>
-        {% endfor %}
+            {% endfor %}
         </tbody>
     </table>
+    {% else %}
+        <div class="alert alert-info">Aucun produit enregistré.</div>
+    {% endif %}
 
-    <a href="{{ path('produit_new') }}">Nouveau Produit</a>
+    <a href="{{ path('produit_new') }}" class="btn btn-success">
+        <i class="bi bi-plus-lg"></i> Nouveau Produit
+    </a>
 {% endblock %}

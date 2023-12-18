@@ -1,14 +1,14 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Produit{% endblock %}
+{% block title %}Produit - {{ produit.nom }}{% endblock %}
 
 {% block main_content %}
-    <h1>Produit</h1>
+    <h1>Détails du Produit</h1>
 
     <table class="table">
         <tbody>
             <tr>
-                <th>Id</th>
+                <th>ID</th>
                 <td>{{ produit.id }}</td>
             </tr>
             <tr> 
@@ -25,14 +25,20 @@
             </tr>
             <tr>
                 <th>Commentaires</th>
-                <td>{{ produit.commentaires }}</td>
+                <td>{{ produit.commentaires | nl2br }}</td>
             </tr>
         </tbody>
     </table>
 
-    <a href="{{ path('produit_index') }}">Retour à la liste</a>
-
-    <a href="{{ path('produit_edit', {'id': produit.id}) }}">Modifier</a>
-
-    {{ include('produit/_delete_form.html.twig') }}
+    <div class="d-flex justify-content-between my-3">
+        <a href="{{ path('produit_index') }}" class="btn btn-secondary" aria-label="Retour à la liste des produits">
+            Retour à la liste
+        </a>
+        <div>
+            <a href="{{ path('produit_edit', {'id': produit.id}) }}" class="btn btn-primary" aria-label="Modifier le produit">
+                Modifier
+            </a>
+            {{ include('produit/_delete_form.html.twig') }}
+        </div>
+    </div>
 {% endblock %}
