@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouvelle Zone{% endblock %}
+
+{% block main_content %}
+
+    <div class="container">
+
+        <h1>Nouvelle Zone</h1>
+
+        {{ form_start(form) }}
+        {{ form_widget(form) }}
+        <button class="btn btn-lg btn-primary">
+            {{ button_label|default('Enregistrer') }}
+        </button>
+        <a class="btn btn-outline-secondary" href="{{ path('zone_index') }}">Annuler</a>
+        {{ form_end(form) }}
+
+    </div>
+
+{% endblock %}
