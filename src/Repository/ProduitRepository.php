@@ -21,6 +21,19 @@ class ProduitRepository extends ServiceEntityRepository
         parent::__construct($registry, Produit::class);
     }
 
+// /**
+// * @return Produit[] Returns an array of Produit objects
+// */
+    public function findAllOrdered(): array {
+        return $this->createQueryBuilder('p')
+        ->leftJoin('p.zone', 'z')
+        ->orderBy('z.position', 'ASC')
+        ->addOrderBy('p.nom', 'ASC')
+        ->getQuery()
+        ->getResult()
+        ;
+        }
+
 //    /**
 //     * @return Produit[] Returns an array of Produit objects
 //     */
