@@ -21,10 +21,10 @@ class ZoneController extends AbstractController
         $this->zoneRepository = $zoneRepository;
     }
 
-    #[Route('/zones', name: 'zone_index')]
+    #[Route('/', name: 'zone_index')]
     public function index(): Response
     {
-        $zones = $this->zoneRepository->findAll();
+        $zones = $this->zoneRepository->findBy([], ['position' => 'ASC']);
 
         return $this->render('zone/index.html.twig', [
             'zones' => $zones,
