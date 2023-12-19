@@ -1,36 +1,44 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Liste de courses by St Félix La Salle{% endblock %}
+{% block title %}Accueil{% endblock %}
 
 {% block main_content %}
-    <div class="py-5 text-center">
-        <h2>Bienvenue sur votre Liste de Courses</h2>
-        <p class="lead">Sélectionnez une zone pour commencer à ajouter des produits à votre liste de courses.</p>
-    </div>
+    <h1>Bienvenue sur votre Liste de Courses</h1>
+    
+    <!-- Courses en cours -->
+    <section id="courses-en-cours">
+        <h2>Courses en cours</h2>
+        <div id="liste-courses">
+            {% for article in articles %}
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="article-{{ article.id }}">
+                <label class="form-check-label" for="article-{{ article.id }}">
+                    {{ article.nom }}
+                </label>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
 
-    <div class="row">
-        {% for zone in zones %}
-            <div class="col-md-4">
-                <div class="card mb-4 shadow-sm">
-                    <div class="card-header">
-                        <h4 class="my-0 font-weight-normal">{{ zone.nom }}</h4>
-                    </div>
-                    <div class="card-body">
-                        <ul class="list-unstyled mt-3 mb-4">
-                            {% for produit in zone.produits %}
-                                <li>{{ produit.nom }} ({{ produit.quantite }})</li>
-                            {% else %}
-                                <li>Aucun produit dans cette zone pour le moment.</li>
-                            {% endfor %}
-                        </ul>
-                        <a href="{{ path('zone_index', {'id': zone.id}) }}" class="btn btn-primary">Voir les produits</a>
-                    </div>
-                </div>
-            </div>
-        {% else %}
-            <div class="col">
-                <p>Aucune zone n'a été trouvée. Veuillez en ajouter une.</p>
-            </div>
-        {% endfor %}
-    </div>
+    <!-- Plus de contenu -->
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        // Ajoutez votre JavaScript ici
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const checkboxes = document.querySelectorAll('#liste-courses .form-check-input');
+            checkboxes.forEach(function(checkbox) {
+                checkbox.addEventListener('change', function() {
+                    if(this.checked) {
+                        // Code pour marquer l'article comme pris
+                        console.log(this.id + ' est coché');
+                    } else {
+                        // Code pour marquer l'article comme non pris
+                        console.log(this.id + ' est décoché');
+                    }
+                });
+            });
+        });
+    </script>
 {% endblock %}

@@ -5,6 +5,7 @@
 namespace App\Controller;
 
 use App\Repository\ZoneRepository;
+use App\Repository\ArticleRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -12,12 +13,12 @@ use Symfony\Component\Routing\Annotation\Route;
 class MainController extends AbstractController
 {
     #[Route('/', name: 'home')]
-    public function index(ZoneRepository $zoneRepository): Response
+    public function index(ArticleRepository $articleRepository): Response
     {
-        $zones = $zoneRepository->findBy([], ['position' => 'ASC']);
+        $articles = $articleRepository->findBy([], ['id' => 'ASC']);
 
         return $this->render('main/index.html.twig', [
-            'zones' => $zones,
+            'articles' => $articles,
         ]);
     }
 }
