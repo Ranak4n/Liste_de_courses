@@ -1,9 +1,36 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Home{% endblock %}
+{% block title %}Liste de courses by St Félix La Salle{% endblock %}
 
-{% block body %}
+{% block main_content %}
+    <div class="py-5 text-center">
+        <h2>Bienvenue sur votre Liste de Courses</h2>
+        <p class="lead">Sélectionnez une zone pour commencer à ajouter des produits à votre liste de courses.</p>
+    </div>
 
-    <h1> {{ message }} </h1>
-
+    <div class="row">
+        {% for zone in zones %}
+            <div class="col-md-4">
+                <div class="card mb-4 shadow-sm">
+                    <div class="card-header">
+                        <h4 class="my-0 font-weight-normal">{{ zone.nom }}</h4>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-unstyled mt-3 mb-4">
+                            {% for produit in zone.produits %}
+                                <li>{{ produit.nom }} ({{ produit.quantite }})</li>
+                            {% else %}
+                                <li>Aucun produit dans cette zone pour le moment.</li>
+                            {% endfor %}
+                        </ul>
+                        <a href="{{ path('zone_index', {'id': zone.id}) }}" class="btn btn-primary">Voir les produits</a>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div class="col">
+                <p>Aucune zone n'a été trouvée. Veuillez en ajouter une.</p>
+            </div>
+        {% endfor %}
+    </div>
 {% endblock %}

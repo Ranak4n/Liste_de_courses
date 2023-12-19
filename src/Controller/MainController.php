@@ -1,20 +1,23 @@
 <?php
 
+// MainController.php
+
 namespace App\Controller;
 
+use App\Repository\ZoneRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class MainController extends AbstractController
 {
-    #[Route('/index', name: 'home')]
-    public function index(): Response
+    #[Route('/', name: 'home')]
+    public function index(ZoneRepository $zoneRepository): Response
     {
-        $message = "Hello students!";
+        $zones = $zoneRepository->findBy([], ['position' => 'ASC']);
 
         return $this->render('main/index.html.twig', [
-            'message' => $message,
+            'zones' => $zones,
         ]);
     }
 }
