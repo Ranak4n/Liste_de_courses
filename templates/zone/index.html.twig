@@ -1,33 +1,37 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Zones{% endblock %}
+{% block title %}Zone index{% endblock %}
 
 {% block main_content %}
+    <h1>Zone index</h1>
 
-    <h1>Liste des Zones</h1>
-
-    <p class="my-4">
-        <a class="btn btn-sm btn-primary" href="{{ path('zone_new') }}"
-            title="Nouvelle Zone"><i class="bi bi-plus-lg me-1"></i>Nouvelle Zone</a>
-    </p>
-
-    <table class="table table-bordered table-striped">
-        <thead class="bg-dark text-white">
+    <table class="table">
+        <thead>
             <tr>
-                <th scope="col">#</th>
-                <th scope="col">Nom</th>
-                <th class="text-center" scope="col">Position</th>
+                <th>Id</th>
+                <th>Nom</th>
+                <th>Position</th>
+                <th>actions</th>
             </tr>
         </thead>
         <tbody>
-            {% for zone in zones %}
+        {% for zone in zones %}
             <tr>
-                <th scope="row">{{ zone.id }}</th>
+                <td>{{ zone.id }}</td>
                 <td>{{ zone.nom }}</td>
-                <td class="text-center">{{ zone.position }}</td>
+                <td>{{ zone.position }}</td>
+                <td>
+                    <a href="{{ path('zone_show', {'id': zone.id}) }}">show</a>
+                    <a href="{{ path('zone_edit', {'id': zone.id}) }}">edit</a>
+                </td>
             </tr>
-            {% endfor %}
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
         </tbody>
-    </table>    
+    </table>
 
+    <a href="{{ path('zone_new') }}">Create new</a>
 {% endblock %}
