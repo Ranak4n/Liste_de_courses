@@ -1,37 +1,74 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Zone index{% endblock %}
+{% block title %}Index des Zones{% endblock %}
 
 {% block main_content %}
-    <h1>Zone index</h1>
+    <h1>Liste des Zones</h1>
 
-    <table class="table">
-        <thead>
+    {% if zones|length > 0 %}
+    <table class="table table-striped">
+        <thead class="table-dark">
             <tr>
-                <th>Id</th>
+                <th>ID</th>
                 <th>Nom</th>
                 <th>Position</th>
-                <th>actions</th>
+                <th class="text-center">Actions</th>
             </tr>
         </thead>
         <tbody>
-        {% for zone in zones %}
+            {% for zone in zones %}
             <tr>
                 <td>{{ zone.id }}</td>
                 <td>{{ zone.nom }}</td>
                 <td>{{ zone.position }}</td>
-                <td>
-                    <a href="{{ path('zone_show', {'id': zone.id}) }}">show</a>
-                    <a href="{{ path('zone_edit', {'id': zone.id}) }}">edit</a>
-                </td>
+                <td class="text-center">
+                    <a href="{{ path('zone_show', {'id': zone.id}) }}" class="btn btn-info btn-sm" aria-label="Voir {{ zone.nom }}">
+                        <i class="bi bi-eye"></i></a>
+                    <a href="{{ path('zone_edit', {'id': zone.id}) }}" class="btn btn-primary btn-sm" aria-label="Modifier {{ zone.nom }}">
+                        <i class="bi bi-pencil"></i></a>
+                    <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteZoneModal{{ zone.id }}">
+                        <i class="bi bi-trash"></i></button>
             </tr>
-        {% else %}
+            
+            <!-- Modale de confirmation -->
+            <div class="modal fade" id="deleteZoneModal{{ zone.id }}" tabindex="-1" aria-labelledby="deleteZoneModalLabel{{ zone.id }}" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="deleteZoneModalLabel">Confirmation de suppression</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+                        </div>
+                        <div class="modal-body">
+                            Êtes-vous sûr de vouloir supprimer cette zone et tous les produits associés ?
+                            <ul>
+                                {% for produit in zone.produits %}
+                                    <li>{{ produit.nom }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                            <!-- Formulaire de suppression -->
+                            <form method="post" action="{{ path('zone_delete', {'id': zone.id}) }}">
+                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ zone.id) }}">
+                                <button type="submit" class="btn btn-danger">Supprimer définitivement</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {% else %}
             <tr>
-                <td colspan="4">no records found</td>
+                <td colspan="4" class="text-center">Aucune zone enregistrée.</td>
             </tr>
-        {% endfor %}
+            {% endfor %}
         </tbody>
     </table>
+    {% else %}
+        <div class="alert alert-info">Aucune zone enregistrée.</div>
+    {% endif %}
 
-    <a href="{{ path('zone_new') }}">Create new</a>
+    <a href="{{ path('zone_new') }}" class="btn btn-success">
+        <i class="bi bi-plus-lg"></i></a>
 {% endblock %}
