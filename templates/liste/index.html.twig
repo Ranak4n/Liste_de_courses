@@ -1,39 +1,53 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Liste index{% endblock %}
+{% block title %}Listes de Courses{% endblock %}
 
 {% block main_content %}
-    <h1>Liste index</h1>
+    <div class="container mt-4">
+        <h1 class="mb-4">Listes de Courses</h1>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Titre</th>
-                <th>Date_courses</th>
-                <th>Terminée</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for liste in listes %}
-            <tr>
-                <td>{{ liste.id }}</td>
-                <td>{{ liste.Titre }}</td>
-                <td>{{ liste.dateCourses ? liste.dateCourses|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ liste.etat ? 'Oui' : 'Non' }}</td>
-                <td>
-                    <a href="{{ path('liste_show', {'id': liste.id}) }}">show</a>
-                    <a href="{{ path('liste_edit', {'id': liste.id}) }}">edit</a>
-                </td>
-            </tr>
+        <div class="mb-3">
+            <a href="{{ path('liste_new') }}" class="btn btn-success">
+                <i class="bi bi-plus-lg"></i> Créer une nouvelle liste
+            </a>
+        </div>
+
+        {% if listes|length > 0 %}
+        <table class="table table-striped table-bordered">
+            <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Titre</th>
+                    <th>Date des Courses</th>
+                    <th>Terminée</th>
+                    <th class="text-center">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for liste in listes %}
+                <tr>
+                    <td>{{ liste.id }}</td>
+                    <td>{{ liste.titre }}</td>
+                    <td>{{ liste.dateCourses ? liste.dateCourses|date('Y-m-d H:i:s') : '' }}</td>
+                    <td>{{ liste.etat ? 'Oui' : 'Non' }}</td>
+                    <td class="text-center">
+                        <a href="{{ path('liste_show', {'id': liste.id}) }}" class="btn btn-info btn-sm">
+                            <i class="bi bi-eye"></i> Afficher
+                        </a>
+                        <a href="{{ path('liste_edit', {'id': liste.id}) }}" class="btn btn-primary btn-sm">
+                            <i class="bi bi-pencil"></i> Modifier
+                        </a>
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="5" class="text-center">Aucune liste enregistrée.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
         {% else %}
-            <tr>
-                <td colspan="5">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
-    <a href="{{ path('liste_new') }}">Create new</a>
+            <div class="alert alert-info">Aucune liste enregistrée.</div>
+        {% endif %}
+    </div>
 {% endblock %}

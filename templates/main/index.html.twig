@@ -4,41 +4,4 @@
 
 {% block main_content %}
     <h1>Bienvenue sur votre Liste de Courses</h1>
-    
-    <!-- Courses en cours -->
-    <section id="courses-en-cours">
-        <h2>Courses en cours</h2>
-        <div id="liste-courses">
-            {% for article in articles %}
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="article-{{ article.id }}">
-                <label class="form-check-label" for="article-{{ article.id }}">
-                    {{ article.nom }}
-                </label>
-            </div>
-            {% endfor %}
-        </div>
-    </section>
-
-    <!-- Plus de contenu -->
-{% endblock %}
-
-{% block javascripts %}
-    <script>
-        // Ajoutez votre JavaScript ici
-        document.addEventListener('DOMContentLoaded', (event) => {
-            const checkboxes = document.querySelectorAll('#liste-courses .form-check-input');
-            checkboxes.forEach(function(checkbox) {
-                checkbox.addEventListener('change', function() {
-                    if(this.checked) {
-                        // Code pour marquer l'article comme pris
-                        console.log(this.id + ' est coché');
-                    } else {
-                        // Code pour marquer l'article comme non pris
-                        console.log(this.id + ' est décoché');
-                    }
-                });
-            });
-        });
-    </script>
 {% endblock %}

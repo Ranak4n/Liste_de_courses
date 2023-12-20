@@ -21,6 +21,15 @@ class ListeRepository extends ServiceEntityRepository
         parent::__construct($registry, Liste::class);
     }
 
+    public function findListsWithArticles()
+    {
+        return $this->createQueryBuilder('l')
+            ->leftJoin('l.articles', 'a')
+            ->addSelect('a')
+            ->getQuery()
+            ->getResult();
+    }
+
 //    /**
 //     * @return Liste[] Returns an array of Liste objects
 //     */
