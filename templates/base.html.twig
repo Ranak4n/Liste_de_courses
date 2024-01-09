@@ -14,7 +14,7 @@
                     font-family: 'Roboto', sans-serif;
                 }
                 .text-shadow {
-                    text-shadow: 2px 2px 4px #000000;
+                    text-shadow: 1px 1px 4px #000000;
                 }
                 body {
                     background-image: url('{{ asset('images/296966-1.jpg') }}');
@@ -38,6 +38,94 @@
                     text-align: center;
                     box-shadow: 0 -2px 4px rgba(0,0,0,0.2); /* Ombre pour le footer */
                     z-index: 1001;
+                }
+                #flying-fruits {
+                    position: fixed;
+                    top: 200;
+                    left: 100;
+                    width: 100%;
+                    height: 100%;
+                    z-index: -1; /* Garantit que les fruits sont en arrière-plan */
+                    overflow: hidden; /* Empêche les fruits de déborder de la page */
+                }
+
+                .fruit {
+                    position: absolute;
+                    width: 200px; /* Taille du fruit */
+                    height: 200px;
+                    background-size: cover;
+                    border-radius: 10%; /* Rend les fruits circulaires */
+                    animation: spin 10s linear infinite;
+                }
+
+                @keyframes spin {
+                    100% { transform: rotate(360deg); }
+                }
+                
+                .panier-tiroir {
+                    position: fixed;
+                    right: -300px; /* Commence caché sur le côté droit */
+                    top: 0;
+                    width: 300px; /* Largeur du tiroir */
+                    height: 100%;
+                    background: #f8f9fa; /* Couleur de fond claire */
+                    box-shadow: -5px 0 10px rgba(0, 0, 0, 0.2); /* Ombre pour donner de la profondeur */
+                    transition: right 0.3s;
+                    z-index: 1050; /* S'assure qu'il est au-dessus des autres éléments */
+                    padding: 20px;
+                    display: flex;
+                    flex-direction: column; /* Organise les éléments verticalement */
+                }
+
+                #fermer-tiroir {
+                    align-self: flex-end; /* Place le bouton de fermeture à droite */
+                    margin-bottom: 20px; /* Espace sous le bouton de fermeture */
+                }
+
+                #contenu-panier {
+                    flex-grow: 1; /* Permet au contenu de prendre l'espace restant */
+                    overflow-y: auto; /* Active la barre de défilement si nécessaire */
+                }
+
+                /* Style pour le titre du panier */
+                .panier-tiroir h3 {
+                    color: #007bff; /* Couleur pour le titre */
+                    margin-bottom: 20px;
+                    font-weight: bold;
+                }
+
+                /* Style pour les éléments du panier */
+                .panier-tiroir .item-panier {
+                    background: white;
+                    border: 1px solid #ddd;
+                    padding: 10px;
+                    margin-bottom: 10px;
+                    border-radius: 5px;
+                }
+
+                /* Lorsque le tiroir est actif, déplacer à droite */
+                .panier-tiroir.active {
+                    right: 0;
+                }
+
+                .barre-panier {
+                    position: fixed;
+                    right: 0;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    background-color: #333;
+                    color: white;
+                    padding: 10px 20px;
+                    cursor: pointer;
+                    z-index: 1001; /* au-dessus du tiroir */
+                    display: flex;
+                    align-items: center;
+                    border-top-left-radius: 10px;
+                    border-bottom-left-radius: 10px;
+                }
+
+                .barre-panier span {
+                    margin-left: 5px;
                 }
             </style>
         {% endblock %}
@@ -71,6 +159,12 @@
             </div>
             </nav>
 
+            <div id="flying-fruits">
+                <div class="fruit" style="background-image: url('images/fruits/banana.png');"></div>
+                <div class="fruit" style="background-image: url('images/fruits/risitas.gif');"></div>
+            </div>
+
+
             <!-- Contenu principal -->
             <div class="container">
                 {% for message in app.flashes('notice') %}
@@ -80,40 +174,59 @@
                 {% block main_content %}{% endblock %}
             </div>
 
+            <!-- Tiroir Panier -->
+                <div id="panier-tiroir" class="panier-tiroir">
+                    <button id="fermer-tiroir" class="btn btn-outline-secondary">Fermer</button>
+                    <h3 class="text-shadow text-center">Panier</h3>
+                    <div id="contenu-panier">
+                        <div class="item-panier">Article 1</div>
+                        <div class="item-panier">Article 2</div>
+                        <!-- Plus d'éléments de panier -->
+                    </div>
+                </div>
+
+            <!-- Barre latérale pour ouvrir le tiroir -->
+            <div id="barre-panier" class="barre-panier">
+                <span class="bi bi-arrow-left"></span> <span>Panier</span>
+            </div>
+
             <!-- Pied de page -->
             <footer class="py-3">
                 <div class="container">
                     <div class="row">
-                        <div class="col-md-6 my-auto">
+                        <div class="col-md-6">
                             <img src="{{ asset('images/logo_campus_stfelixlasalle.jpg') }}" alt="Logo" class="footer-logo">
                         </div>
-                        <div class="col-md-6 my-auto">
+                        <div class="col-md-6">
                             <p>Campus Saint-Félix La Salle &copy; 2024 - Tous droits réservés</p>
                         </div>
                     </div>
                 </div>
             </footer>
+
+
         {% endblock %}
 
         {% block javascripts %}
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
             <script>
-                document.addEventListener('DOMContentLoaded', function () {
-                    var sidebar = document.getElementById('sidebar');
-                    var sidebarCollapse = document.getElementById('sidebarCollapse');
-                    var overlay = document.getElementById('sidebarOverlay');
+                document.addEventListener('DOMContentLoaded', function() {
+                    var tiroir = document.getElementById('panier-tiroir');
+                    var barrePanier = document.getElementById('barre-panier');
+                    var fermerTiroir = document.getElementById('fermer-tiroir');
 
-                    sidebarCollapse.addEventListener('click', function () {
-                        sidebar.classList.toggle('active');
-                        overlay.classList.toggle('active');
+                    // Ouvrir le tiroir
+                    barrePanier.addEventListener('click', function() {
+                        tiroir.classList.add('active');
                     });
 
-                    overlay.addEventListener('click', function () {
-                        sidebar.classList.remove('active');
-                        overlay.classList.remove('active');
+                    // Fermer le tiroir
+                    fermerTiroir.addEventListener('click', function() {
+                        tiroir.classList.remove('active');
                     });
                 });
             </script>
+
         {% endblock %}
     </body>
 </html>

@@ -21,6 +21,16 @@ class ArticleRepository extends ServiceEntityRepository
         parent::__construct($registry, Article::class);
     }
 
+    public function findArticlesInPanier(): array
+    {
+        return $this->createQueryBuilder('a')
+            ->where('a.panier = :val')
+            ->setParameter('val', true)
+            ->getQuery()
+            ->getResult();
+    }
+
+
 //    /**
 //     * @return Article[] Returns an array of Article objects
 //     */

@@ -25,4 +25,5 @@ class MainController extends AbstractController
             'articles' => $articles,
         ]);
     }
+    
 }
