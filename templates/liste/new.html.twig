@@ -1,11 +1,17 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New Liste{% endblock %}
+{% block title %}Nouvelle Liste{% endblock %}
 
 {% block main_content %}
-    <h1>Create new Liste</h1>
+    <div class="container mt-5">
+        <h1 class="mb-4 display-4 text-center">Créer une nouvelle Liste</h1>
 
-    {{ include('liste/_form.html.twig') }}
+        {{ include('liste/_form.html.twig') }}
 
-    <a href="{{ path('liste_index') }}">back to list</a>
+        <div class="text-center mt-4">
+            <a href="{{ path('liste_index') }}" class="btn btn-outline-secondary">
+                <i class="bi bi-list-ul"></i> Retour à la liste des listes
+            </a>
+        </div>
+    </div>
 {% endblock %}

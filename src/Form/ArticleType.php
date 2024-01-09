@@ -19,11 +19,11 @@ class ArticleType extends AbstractType
             ->add('panier')
             ->add('liste', EntityType::class, [
                 'class' => Liste::class,
-'choice_label' => 'id',
+'choice_label' => 'titre',
             ])
             ->add('produit', EntityType::class, [
                 'class' => Produit::class,
-'choice_label' => 'id',
+'choice_label' => 'nom',
             ])
         ;
     }

@@ -72,10 +72,22 @@ class ListeController extends AbstractController
     public function delete(Request $request, Liste $liste, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete'.$liste->getId(), $request->request->get('_token'))) {
+            // Récupérer tous les articles liés à la liste
+            $articles = $liste->getArticles();
+
+            // Supprimer d'abord les articles
+            foreach ($articles as $article) {
+                $entityManager->remove($article);
+            }
+            // Après avoir supprimé les articles, supprimer la liste
             $entityManager->remove($liste);
             $entityManager->flush();
+
+            $this->addFlash('success', 'La liste et tous les articles associés ont été supprimés.');
+        } else {
+            $this->addFlash('error', 'Token invalide, impossible de supprimer la liste.');
         }
 
-        return $this->redirectToRoute('liste_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('liste_index');
     }
 }
