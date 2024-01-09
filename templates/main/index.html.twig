@@ -3,5 +3,25 @@
 {% block title %}Accueil{% endblock %}
 
 {% block main_content %}
-    <h1>Bienvenue sur votre Liste de Courses</h1>
+<div class="py-5 text-center">
+    <h1 class="display-4">Bienvenue sur votre Liste de Courses</h1>
+    <p class="lead">Organisez et gérez vos courses avec facilité.</p>
+</div>
+
+<div class="container">
+    <h2>Listes de Courses</h2>
+    {% if listes|length > 0 %}
+        <div class="list-group">
+            {% for liste in listes %}
+                <a href="{{ path('liste_show', {'id': liste.id}) }}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                    {{ liste.titre }}
+                    <span class="badge badge-primary badge-pill">{{ liste.articles|length }}</span>
+                </a>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>Aucune liste de courses trouvée. Commencez par en <a href="{{ path('liste_new') }}">créer une</a>.</p>
+    {% endif %}
+</div>
+
 {% endblock %}

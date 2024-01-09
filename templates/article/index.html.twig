@@ -4,7 +4,7 @@
 
 {% block main_content %}
     <div class="container mt-4">
-       <h1 class="mb-4 display-3 text-primary text-shadow text-center">Gestion des Articles et des Listes de Courses</h1>
+       <h1 class="mb-4 display-3 text-primary text-shadow text-center">Gestion des Articles et des Listes</h1>
 
         <div class="row">
             <!-- Colonne de gauche pour les listes de courses -->
@@ -32,7 +32,7 @@
                         {% for liste in listes %}
                             {% set articles = liste.articles|default([]) %}
                             {% if articles|length > 0 %}
-                                <h4>Liste : {{ liste.titre }}</h4>
+                                <h4>{{ liste.titre }}</h4>
                                 <table class="table table-striped table-bordered">
                                     <thead class="table-dark">
                                         <tr class="text-center">
