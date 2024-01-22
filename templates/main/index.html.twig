@@ -3,6 +3,24 @@
 {% block title %}Accueil{% endblock %}
 
 {% block main_content %}
+
+    <div id="panier-tiroir" class="panier-tiroir">
+        <button id="fermer-tiroir" class="btn btn-outline-secondary">Fermer</button>
+        <h3 class="text-shadow text-center">Panier</h3>
+        <div id="contenu-panier">
+            {% for article in articlesDansLePanier %}
+                <div class="item-panier">{{ article.produit.nom }} - Quantité: {{ article.quantite }}</div>
+            {% else %}
+                <p>Votre panier est vide.</p>
+            {% endfor %}
+        </div>
+    </div>
+
+    {# Barre latérale pour ouvrir le tiroir #}
+    <div id="barre-panier" class="barre-panier">
+        <span class="bi bi-arrow-left"></span> <span>Panier</span>
+    </div>
+
 <div class="py-5 text-center">
     <h1 class="display-4">Bienvenue sur votre Liste de Courses</h1>
     <p class="lead text-shadow">Organisez et gérez vos courses avec facilité.</p>
@@ -23,5 +41,26 @@
         <p>Aucune liste de courses trouvée. Commencez par en <a href="{{ path('liste_new') }}">créer une</a>.</p>
     {% endif %}
 </div>
+
+{# Scripts pour gérer l'ouverture/fermeture du panier #}
+    {% block javascripts %}
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                var tiroir = document.getElementById('panier-tiroir');
+                var barrePanier = document.getElementById('barre-panier');
+                var fermerTiroir = document.getElementById('fermer-tiroir');
+
+                // Ouvrir le tiroir
+                barrePanier.addEventListener('click', function() {
+                    tiroir.classList.add('active');
+                });
+
+                // Fermer le tiroir
+                fermerTiroir.addEventListener('click', function() {
+                    tiroir.classList.remove('active');
+                });
+            });
+        </script>
+    {% endblock %}
 
 {% endblock %}

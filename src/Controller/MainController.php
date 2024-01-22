@@ -15,15 +15,14 @@ class MainController extends AbstractController
     #[Route('/', name: 'home')]
     public function index(ListeRepository $listeRepository, ArticleRepository $articleRepository): Response
     {
-        // Récupère toutes les listes
         $listes = $listeRepository->findBy([], ['id' => 'ASC']);
-        // Récupère tous les articles
-        $articles = $articleRepository->findBy([], ['id' => 'ASC']);
+        $articlesDansLePanier = $articleRepository->findBy(['panier' => true], ['id' => 'ASC']);
 
         return $this->render('main/index.html.twig', [
             'listes' => $listes,
-            'articles' => $articles,
+            'articlesDansLePanier' => $articlesDansLePanier,
         ]);
     }
+
     
 }
