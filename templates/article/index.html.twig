@@ -1,0 +1,85 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des Articles{% endblock %}
+
+{% block main_content %}
+<div class="container mt-4">
+    <h1 class="mb-4 display-3 text-primary text-shadow text-center">Gestion des Articles et des Listes</h1>
+
+    <div class="row">
+        <!-- Colonne de gauche pour les listes de courses -->
+        <div class="col-md-4 pe-md-5 border-end"> <!-- Ajout d'une bordure à droite et padding -->
+            <h2 class="text-shadow">Listes de Courses</h2>
+            {% if listes|length > 0 %}
+                <div class="list-group mb-4">
+                    {% for liste in listes %}
+                        <a href="{{ path('liste_show', {'id': liste.id}) }}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                            {{ liste.titre }}
+                            <span class="badge bg-primary rounded-pill">{{ liste.articles|length }}</span>
+                        </a>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="alert alert-info" role="alert">
+                    Aucune liste de courses trouvée. <a href="{{ path('liste_new') }}" class="alert-link">Créez-en une maintenant.</a>
+                </div>
+            {% endif %}
+            <a href="{{ path('liste_new') }}" class="btn btn-success mt-3 w-100">
+                <i class="bi bi-plus-lg"></i> Créer une nouvelle liste
+            </a>
+        </div>
+
+        <!-- Colonne de droite pour les articles -->
+        <div class="col-md-8">
+            <div class="mb-3">
+                <a href="{{ path('article_new') }}" class="btn btn-success">
+                    <i class="bi bi-plus-lg"></i> Ajouter un nouvel article
+                </a>
+            </div>
+            {% if listes|length > 0 %}
+                {% for liste in listes %}
+                    {% set articles = liste.articles|default([]) %}
+                    {% if articles|length > 0 %}
+                        <h4>{{ liste.titre }}</h4>
+                        <table class="table table-striped table-bordered">
+                            <thead class="table-dark">
+                                <tr class="text-center">
+                                    <th>Produit</th>
+                                    <th>Quantité</th>
+                                    <th>Panier</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for article in articles %}
+                                    <tr class="text-center">
+                                        <td>{{ article.produit.nom }}</td>
+                                        <td>{{ article.quantite }}</td>
+                                        <td>{{ article.panier ? 'Oui' : 'Non' }}</td>
+                                        <td>
+                                            <a href="{{ path('article_show', {'id': article.id}) }}" class="btn btn-info btn-sm">
+                                                <i class="bi bi-eye"></i> Afficher
+                                            </a>
+                                            <a href="{{ path('article_edit', {'id': article.id}) }}" class="btn btn-primary btn-sm">
+                                                <i class="bi bi-pencil"></i> Modifier
+                                            </a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    {% else %}
+                        <div class="alert alert-warning" role="alert">
+                            Aucun article enregistré pour la liste "{{ liste.titre }}". <a href="{{ path('article_new') }}" class="alert-link">Ajoutez des articles maintenant.</a>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            {% else %}
+                <div class="alert alert-info" role="alert">
+                    Commencez par créer une liste pour ajouter des articles.
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

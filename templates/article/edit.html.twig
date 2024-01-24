@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Article{% endblock %}
+
+{% block main_content %}
+    <h1>Edit Article</h1>
+
+    {{ include('article/_form.html.twig', {'button_label': 'Mettre à jour'}) }}
+
+    <a href="{{ path('article_index') }}" class="btn btn-secondary">Retour à la liste</a>
+
+    {{ include('article/_delete_form.html.twig') }}
+{% endblock %}

@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste{% endblock %}
+
+{% block main_content %}
+    <div class="container mt-4">
+        <h1 class="mb-4">Détails de la Liste</h1>
+
+        <table class="table table-striped table-bordered">
+            <tbody>
+                <tr>
+                    <th>ID</th>
+                    <td>{{ liste.id }}</td>
+                </tr>
+                <tr>
+                    <th>Titre</th>
+                    <td>{{ liste.titre }}</td>
+                </tr>
+                <tr>
+                    <th>Date des Courses</th>
+                    <td>{{ liste.dateCourses ? liste.dateCourses|date('Y-m-d H:i:s') : '' }}</td>
+                </tr>
+                <tr>
+                    <th>État</th>
+                    <td>{{ liste.etat ? 'Oui' : 'Non' }}</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="my-3">
+            <a href="{{ path('article_index') }}" class="btn btn-secondary">
+                <i class="bi bi-arrow-left"></i> Retour à la liste
+            </a>
+            <a href="{{ path('liste_edit', {'id': liste.id}) }}" class="btn btn-primary">
+                <i class="bi bi-pencil"></i> Modifier
+            </a>
+            {{ include('liste/_delete_form.html.twig') }}
+        </div>
+    </div>
+{% endblock %}

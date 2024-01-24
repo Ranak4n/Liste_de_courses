@@ -1,0 +1,33 @@
+<!-- Bouton qui déclenche la modale -->
+<br/>
+<button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteZoneModal">
+    Supprimer
+</button>
+
+<!-- Modale de confirmation -->
+<div class="modal fade" id="deleteZoneModal" tabindex="-1" aria-labelledby="deleteZoneModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteZoneModalLabel">Confirmation de suppression</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+            </div>
+            <div class="modal-body">
+                Êtes-vous sûr de vouloir supprimer cette zone et tous les produits associés ?
+                <ul>
+                    {% for produit in zone.produits %}
+                        <li>{{ produit.nom }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                <!-- Formulaire de suppression -->
+                <form method="post" action="{{ path('zone_delete', {'id': zone.id}) }}">
+                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ zone.id) }}">
+                    <button type="submit" class="btn btn-danger">Supprimer définitivement</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

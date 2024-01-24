@@ -3,19 +3,9 @@
 {% block title %}Nouvelle Zone{% endblock %}
 
 {% block main_content %}
+    <h1 class="mb-4">Créer une nouvelle Zone</h1>
 
-    <div class="container">
+    {{ include('zone/_form.html.twig') }}
 
-        <h1>Nouvelle Zone</h1>
-
-        {{ form_start(form) }}
-        {{ form_widget(form) }}
-        <button class="btn btn-lg btn-primary">
-            {{ button_label|default('Enregistrer') }}
-        </button>
-        <a class="btn btn-outline-secondary" href="{{ path('zone_index') }}">Annuler</a>
-        {{ form_end(form) }}
-
-    </div>
-
+    <a href="{{ path('zone_index') }}" class="btn btn-secondary">Retour à la liste</a>
 {% endblock %}

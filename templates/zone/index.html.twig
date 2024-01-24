@@ -1,33 +1,76 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Zones{% endblock %}
+{% block title %}Index des Zones{% endblock %}
 
 {% block main_content %}
+    <div class="container mt-4">
+        <h1 class="mb-4 text-shadow">Liste des Zones</h1>
 
-    <h1>Liste des Zones</h1>
+        <div class="mb-3">
+            <a href="{{ path('zone_new') }}" class="btn btn-success">
+                <i class="bi bi-plus-lg"></i> Ajouter une nouvelle zone</a>
+        </div>
 
-    <p class="my-4">
-        <a class="btn btn-sm btn-primary" href="{{ path('zone_new') }}"
-            title="Nouvelle Zone"><i class="bi bi-plus-lg me-1"></i>Nouvelle Zone</a>
-    </p>
+        {% if zones|length > 0 %}
+        <table class="table table-striped table-bordered">
+            <thead class="bg-dark text-white">
+                <tr class="text-center">
+                    <th>Nom</th>
+                    <th>Position</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for zone in zones %}
+                <tr class="text-center">
+                    <td>{{ zone.nom }}</td>
+                    <td>{{ zone.position }}</td>
+                    <td class="text-center">
+                        <a href="{{ path('zone_show', {'id': zone.id}) }}" class="btn btn-info btn-sm" aria-label="Voir {{ zone.nom }}">
+                            <i class="bi bi-eye"></i></a>
+                        <a href="{{ path('zone_edit', {'id': zone.id}) }}" class="btn btn-primary btn-sm" aria-label="Modifier {{ zone.nom }}">
+                            <i class="bi bi-pencil"></i></a>
+                        <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteZoneModal{{ zone.id }}">
+                            <i class="bi bi-trash"></i></button>
+                </tr>
+                
+                <!-- Modale de confirmation -->
+                <div class="modal fade" id="deleteZoneModal{{ zone.id }}" tabindex="-1" aria-labelledby="deleteZoneModalLabel{{ zone.id }}" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="deleteZoneModalLabel">Confirmation de suppression</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+                            </div>
+                            <div class="modal-body">
+                                Êtes-vous sûr de vouloir supprimer cette zone et tous les produits associés ?
+                                <ul>
+                                    {% for produit in zone.produits %}
+                                        <li>{{ produit.nom }}</li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                                <!-- Formulaire de suppression -->
+                                <form method="post" action="{{ path('zone_delete', {'id': zone.id}) }}">
+                                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ zone.id) }}">
+                                    <button type="submit" class="btn btn-danger">Supprimer définitivement</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-    <table class="table table-bordered table-striped">
-        <thead class="bg-dark text-white">
-            <tr>
-                <th scope="col">#</th>
-                <th scope="col">Nom</th>
-                <th class="text-center" scope="col">Position</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for zone in zones %}
-            <tr>
-                <th scope="row">{{ zone.id }}</th>
-                <td>{{ zone.nom }}</td>
-                <td class="text-center">{{ zone.position }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>    
-
+                {% else %}
+                <tr>
+                    <td colspan="4" class="text-center">Aucune zone enregistrée.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+            <div class="alert alert-info">Aucune zone enregistrée.</div>
+        {% endif %}
+    </div>
 {% endblock %}

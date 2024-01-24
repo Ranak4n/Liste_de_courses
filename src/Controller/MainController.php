@@ -1,20 +1,28 @@
 <?php
 
+// MainController.php
+
 namespace App\Controller;
 
+use App\Repository\ListeRepository;
+use App\Repository\ArticleRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class MainController extends AbstractController
 {
-    #[Route('/index', name: 'home')]
-    public function index(): Response
+    #[Route('/', name: 'home')]
+    public function index(ListeRepository $listeRepository, ArticleRepository $articleRepository): Response
     {
-        $message = "Hello students!";
+        $listes = $listeRepository->findBy([], ['id' => 'ASC']);
+        $articlesDansLePanier = $articleRepository->findBy(['panier' => true], ['id' => 'ASC']);
 
         return $this->render('main/index.html.twig', [
-            'message' => $message,
+            'listes' => $listes,
+            'articlesDansLePanier' => $articlesDansLePanier,
         ]);
     }
+
+    
 }
