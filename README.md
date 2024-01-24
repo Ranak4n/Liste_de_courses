@@ -20,27 +20,27 @@ Ce projet est une application web de gestion de listes de courses développée p
 
 Pour mettre en place le projet sur votre machine locale pour le développement et les tests, suivez les étapes ci-dessous :
 
-1. Clonez le dépôt sur votre machine :
+### Clonez le dépôt sur votre machine :
 
    https://github.com/Ranak4n/Liste_de_courses.git
 
    Installez les dépendances Composer : composer install
 
-2. Configurez votre fichier .env avec vos informations de base de données.
+### Configurez votre fichier .env avec vos informations de base de données.
 
-3. Créez la base de données si elle n'existe pas déjà : 
+### Créez la base de données si elle n'existe pas déjà : 
     php bin/console doctrine:database:create
 
-4. Exécutez les migrations pour créer les tables nécessaires : 
+### Exécutez les migrations pour créer les tables nécessaires : 
     php bin/console doctrine:migrations:migrate
 
 ### (Optionnel) Chargez les fixtures pour avoir un jeu de données de départ : 
     php bin/console doctrine:fixtures:load
 
-5. Lancez le serveur de développement : 
+### Lancez le serveur de développement : 
     symfony server:start
 
-    Visitez http://localhost:8000 dans votre navigateur web pour voir l'application en action.
+Visitez http://localhost:8000 dans votre navigateur web pour voir l'application en action.
 
 ## Contribution
 
